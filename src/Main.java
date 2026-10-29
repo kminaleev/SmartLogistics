@@ -21,5 +21,25 @@ public class Main {
         System.out.println("Статус после движения");
         center.dispatch(tracked);
         center.monitorFleet(tracked);
+        Warehouse<StandardBox> boxes = new Warehouse<>();
+        boxes.addItem(new StandardBox("B-3", "Книги", 10));
+        boxes.addItem(new StandardBox("B-4", "Одежда", 15));
+        Warehouse<FragileItem> fragile = new Warehouse<>();
+        fragile.addItem(new FragileItem("F-2", "Ваза", 2, true));
+        fragile.addItem(new FragileItem("F-3", "Бокалы", 3, true));
+        // boxes.addItem(new FragileItem("F-X", "Стекло", 1, true));
+        // Ошибка компиляции: addItem ожидает StandardBox, а FragileItem — другой
+        // наследник BaseCargo. Общий интерфейс ICargo не делает их взаимозаменяемыми
+        // внутри Warehouse<StandardBox>; ограничение T extends ICargo сохраняет T.
+        System.out.println("Склад обычных коробок");
+        boxes.printManifest();
+        System.out.println("Общий вес: " + boxes.getTotalWeight() + " кг");
+        System.out.println("Склад хрупких грузов");
+        fragile.printManifest();
+        System.out.println("Общий вес: " + fragile.getTotalWeight() + " кг");
+        Report<Warehouse<StandardBox>> boxReport = new Report<>(boxes);
+        Report<Warehouse<FragileItem>> fragileReport = new Report<>(fragile);
+        boxReport.printReport();
+        fragileReport.printReport();
     }
 }
