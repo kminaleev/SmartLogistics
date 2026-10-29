@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 public class Main {
     public static void main(String[] args) {
@@ -5,14 +6,20 @@ public class Main {
         Truck truck = new Truck("T-1", 10000, true);
         Drone drone = new Drone("D-1", 100);
         car.load(100);
-        truck.load(new CargoItem("Оборудование", 2000));
-        truck.load(List.of(new CargoItem("Коробка 1", 20), new CargoItem("Коробка 2", 30)));
-        drone.load(new CargoItem("Посылка", 5));
-        drone.load(1); // Лимит превышен: текущая загрузка остаётся 5 кг.
-        for (Vehicle v : List.of(car, truck, drone))
-            System.out.println(v.getId() + ": " + v.getCurrentLoadKg() + " кг, грузов: " + v.getCargoList().size());
+        truck.load(new RefrigeratedContainer("R-1", "Продукты", 2000, -18));
+        truck.load(List.of(new StandardBox("B-1", "Детали", 20), new FragileItem("F-1", "Стекло", 30, true)));
+        drone.load(new StandardBox("B-2", "Посылка", 5));
+        drone.load(1);
+        for (ICargo item : truck.getCargoList()) System.out.println(item.getType() + ": " + item.getWeight() + " кг");
+        List<ITrackable> tracked = new ArrayList<>();
+        tracked.add(truck); tracked.add(drone);
+        // tracked.add(car); // Ошибка компиляции: Car не реализует ITrackable.
+        LogisticsCenter center = new LogisticsCenter();
+        System.out.println("Координаты до движения");
+        center.monitorFleet(tracked);
         new FleetManager().startDelivery(List.of(car, truck, drone));
-        drone.move();
-        System.out.println("Заряд после двух перемещений: " + drone.getBatteryLevel() + "%");
+        System.out.println("Статус после движения");
+        center.dispatch(tracked);
+        center.monitorFleet(tracked);
     }
 }
