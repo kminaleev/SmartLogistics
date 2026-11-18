@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+// T — вид груза, который хранит этот склад.
 public class Warehouse<T extends ICargo> {
     private final List<T> items = new ArrayList<>();
     public void addItem(T item) {

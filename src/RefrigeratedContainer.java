@@ -5,6 +5,6 @@ public class RefrigeratedContainer extends BaseCargo {
         if (!Double.isFinite(targetTemperature)) throw new IllegalArgumentException("Некорректная температура");
         this.targetTemperature = targetTemperature;
     }
-    public double getTargetTemperature() { return targetTemperature; }
+    public double getTemperature() { return targetTemperature; }
     @Override public String getType() { return "Рефрижератор (" + targetTemperature + " °C)"; }
 }

@@ -4,7 +4,7 @@ public class FragileItem extends BaseCargo {
         super(id, name, weight);
         this.requiresSpecialHandling = requiresSpecialHandling;
     }
-    public boolean isRequiresSpecialHandling() { return requiresSpecialHandling; }
+    public boolean needsCare() { return requiresSpecialHandling; }
     @Override public String getType() {
         return "Хрупкий груз (особое обращение: " + (requiresSpecialHandling ? "да" : "нет") + ")";
     }

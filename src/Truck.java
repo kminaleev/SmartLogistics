@@ -2,13 +2,14 @@ public class Truck extends Vehicle implements ITrackable {
     private double latitude;
     private double longitude;
     private final boolean hasTrailer;
-    public Truck(String id, double baseCapacityKg, boolean hasTrailer) {
-        super(id, capacity(baseCapacityKg, hasTrailer));
+    public Truck(String id, double baseLimitKg, boolean hasTrailer) {
+        super(id, calcLimitKg(baseLimitKg, hasTrailer));
         this.hasTrailer = hasTrailer;
     }
-    private static double capacity(double base, boolean trailer) {
+    private static double calcLimitKg(double base, boolean trailer) {
         if (!Double.isFinite(base) || base <= 0)
             throw new IllegalArgumentException("Базовая грузоподъёмность должна быть > 0");
+        // Прицеп добавляет 5000 кг к базовому лимиту.
         return base + (trailer ? 5000 : 0);
     }
     public boolean hasTrailer() { return hasTrailer; }

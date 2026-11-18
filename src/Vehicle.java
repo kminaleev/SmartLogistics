@@ -20,18 +20,19 @@ public abstract class Vehicle {
     public void load(ICargo item) { load(List.of(item)); }
     public void load(List<ICargo> items) {
         if (items == null) throw new IllegalArgumentException("Список не задан");
-        List<ICargo> batch = new ArrayList<>(items);
+        List<ICargo> newItems = new ArrayList<>(items);
         double sum = 0;
-        for (ICargo item : batch) {
+        for (ICargo item : newItems) {
             if (item == null || !Double.isFinite(item.getWeight()) || item.getWeight() <= 0)
                 throw new IllegalArgumentException("Недопустимый груз");
             sum += item.getWeight();
         }
+        // Сравниваем вес всей партии с тем, сколько ещё можно загрузить.
         if (!Double.isFinite(sum) || sum > maxCapacityKg - currentLoadKg) {
             System.out.println("Превышен лимит загрузки для " + id);
             return;
         }
-        cargoList.addAll(batch);
+        cargoList.addAll(newItems);
         currentLoadKg += sum;
     }
     public List<ICargo> getCargoList() { return List.copyOf(cargoList); }
